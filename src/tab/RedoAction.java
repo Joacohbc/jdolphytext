@@ -7,19 +7,21 @@ import javax.swing.Action;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.UndoManager;
 
-public 	class RedoAction extends AbstractAction {
+public class RedoAction extends AbstractAction {
 	
 	private UndoManager undoManager;
 	private UndoAction undoAction;
 
-	public RedoAction(UndoManager undoManager, UndoAction undoAction) {
+	public RedoAction(UndoManager undoManager) {
 		super("Redo");
 		setEnabled(false);
 		this.undoManager = undoManager;
-		this.undoAction = undoAction;
 	}
 
-
+	public void setUndoAction(UndoAction undoAction) {
+		this.undoAction = undoAction;
+	}
+	
 	public void actionPerformed(ActionEvent e) {
 		try {
 			undoManager.redo();

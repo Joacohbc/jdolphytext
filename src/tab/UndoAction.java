@@ -12,13 +12,16 @@ public class UndoAction extends AbstractAction {
 	private UndoManager undoManager;
 	private RedoAction redoAction;
 	
-	public UndoAction(UndoManager undoManager, RedoAction redoAction) {
+	public UndoAction(UndoManager undoManager) {
 		super("Undo");
 		setEnabled(false);
 		this.undoManager = undoManager;
-		this.redoAction = redoAction;
 	}
 
+	public void setRedoAction(RedoAction redoAction) {
+		this.redoAction = redoAction;
+	}
+	
 	public void actionPerformed(ActionEvent e) {
 		try {
 			undoManager.undo();

@@ -13,8 +13,11 @@ public class UndoRedoHandler implements UndoableEditListener {
 	
 	public UndoRedoHandler() {
 		this.undoManager = new UndoManager();
-		this.undoAction = new UndoAction(undoManager, redoAction);
-		this.redoAction = new RedoAction(undoManager, undoAction);
+		this.redoAction = new RedoAction(undoManager);
+		this.undoAction = new UndoAction(undoManager);
+		undoAction.setRedoAction(redoAction);
+		redoAction.setUndoAction(undoAction);
+		
 	}
 	
 	public UndoManager getUndoManager() {

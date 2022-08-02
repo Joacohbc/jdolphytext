@@ -41,7 +41,6 @@ public class Tab extends JPanel {
 	private TabsManager tabManager;
 	private JTextPane textTexto;
 	private JLabel lblRuta;
-	private UndoRedoHandler undoRedoHandler = new UndoRedoHandler();
 
 	// Este constructor es para que cuando hay que cargar una nueva Tab con un
 	// contenido que ya existe
@@ -96,6 +95,8 @@ public class Tab extends JPanel {
 
 		// SACADO DE: https://alvinalexander.com/java/java-undo-redo/
 		Document editorPaneDocument = textTexto.getDocument();
+		UndoRedoHandler undoRedoHandler = new UndoRedoHandler();
+		
 		KeyStroke undoKeystroke = KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK);
 		KeyStroke redoKeystroke = KeyStroke.getKeyStroke(KeyEvent.VK_Y, KeyEvent.CTRL_DOWN_MASK);
 
