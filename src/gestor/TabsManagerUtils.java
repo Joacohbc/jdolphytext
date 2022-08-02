@@ -12,7 +12,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.text.BadLocationException;
@@ -21,6 +20,7 @@ import javax.swing.text.Document;
 import javax.swing.text.StyleContext;
 import javax.swing.text.rtf.RTFEditorKit;
 
+import mensajes.Mensajes;
 import tab.Tab;
 
 public class TabsManagerUtils {
@@ -88,11 +88,9 @@ public class TabsManagerUtils {
 			tab.getJTextPane().write(writer);
 
 		} else {
-			int opcion = JOptionPane.showConfirmDialog(null,
-					"Formato selccionado no es soportado, ¿Desea guardar igual?",
-					"Aviso de formato no soportado", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
-			if (opcion == JOptionPane.NO_OPTION) {
+			if (!Mensajes.YesNoMessage("Formato selccionado no es soportado, ¿Desea guardar igual?",
+					"Aviso de formato no soportado")) {
 				return false;
 			}
 
@@ -148,8 +146,7 @@ public class TabsManagerUtils {
 
 		// Si el la flag de cartel esta actiavada que muestre un mensaje de exito
 		if (cartel) {
-			JOptionPane.showMessageDialog(null, "Su archivo se guardo en " + ruta, "Guardado...",
-					JOptionPane.INFORMATION_MESSAGE);
+			Mensajes.InformationMessage(panel,"Su archivo se guardo en " + ruta, "Guardado...");
 		}
 		return true;
 	}
@@ -196,8 +193,7 @@ public class TabsManagerUtils {
 		panel.getSelectedComponent().setRuta(ruta);
 
 		if (cartel) {
-			JOptionPane.showMessageDialog(null, "Su archivo se guardo en " + ruta, "Guardado...",
-					JOptionPane.INFORMATION_MESSAGE);
+			Mensajes.InformationMessage(panel,"Su archivo se guardo en " + ruta, "Guardado como...");
 		}
 
 		return true;
@@ -238,11 +234,8 @@ public class TabsManagerUtils {
 			reader.close();
 
 		} else {
-			int opcion = JOptionPane.showConfirmDialog(null,
-					"Formato selccionado no es soportado, ¿Desea abrirlo igual?",
-					"Aviso de formato no soportado", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-
-			if (opcion == JOptionPane.NO_OPTION) {
+			if (!Mensajes.YesNoMessage("Formato selccionado no es soportado, ¿Desea abrirlo igual?",
+					"Aviso de formato no soportado")) {
 				return false;
 			}
 
@@ -286,8 +279,7 @@ public class TabsManagerUtils {
 
 		String ruta = chooser.getSelectedFile().getPath();
 		if (!RutaExite(ruta)) {
-			JOptionPane.showMessageDialog(panel, "El archivo seleccionada no exite: " + ruta, "Error al abrir archivo",
-					JOptionPane.ERROR_MESSAGE);
+			Mensajes.ErrorMessage(panel, "El archivo seleccionada no exite: " + ruta, Mensajes.ErrorOpenTitle);
 			return false;
 		}
 

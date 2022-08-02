@@ -15,7 +15,6 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.print.PrinterException;
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import javax.swing.JLabel;
@@ -35,6 +34,7 @@ import javax.swing.text.StyledDocument;
 
 import gestor.TabsManager;
 import gestor.TabsManagerUtils;
+import mensajes.Mensajes;
 
 public class Tab extends JPanel {
 
@@ -48,7 +48,7 @@ public class Tab extends JPanel {
 	// El nuevo JTextPane tenga la accion de Undo
 	public Tab(JTextPane textTextoEntrada, TabsManager parent) {
 		super();
-		
+
 		this.tabManager = parent;
 
 		this.setLayout(new BorderLayout(0, 0));
@@ -175,8 +175,8 @@ public class Tab extends JPanel {
 						textTexto.setSelectionEnd(seleccion[1]);
 
 					} catch (BadLocationException e1) {
-						JOptionPane.showMessageDialog(null, "Ocurrio un error: " + e1.getMessage(),
-								"Error de Mayus/Minus", JOptionPane.ERROR_MESSAGE);
+						Mensajes.ErrorMessage(tabManager,"Ocurrio un error al autocompletar: " + e1.getMessage(),
+								"Error de Mayus/Minus");
 					}
 
 				}
@@ -189,64 +189,55 @@ public class Tab extends JPanel {
 
 					if (textTexto.getSelectedText().equals("n")) {
 						doc.remove(seleccion()[0], 1);
-						doc.insertString(seleccion()[0], "�", null);
+						doc.insertString(seleccion()[0], "ñ", null);
 
 					} else if (textTexto.getSelectedText().equals("N")) {
 						doc.remove(seleccion()[0], 1);
-						doc.insertString(seleccion()[0], "�", null);
+						doc.insertString(seleccion()[0], "Ñ", null);
 
 					} else if (textTexto.getSelectedText().equals("a")) {
 						doc.remove(seleccion()[0], 1);
-						doc.insertString(seleccion()[0], "�", null);
+						doc.insertString(seleccion()[0], "á", null);
 
 					} else if (textTexto.getSelectedText().equals("A")) {
 						doc.remove(seleccion()[0], 1);
-						doc.insertString(seleccion()[0], "�", null);
+						doc.insertString(seleccion()[0], "Á", null);
 
 					} else if (textTexto.getSelectedText().equals("e")) {
 						doc.remove(seleccion()[0], 1);
-						doc.insertString(seleccion()[0], "�", null);
+						doc.insertString(seleccion()[0], "é", null);
 
 					} else if (textTexto.getSelectedText().equals("E")) {
 						doc.remove(seleccion()[0], 1);
-						doc.insertString(seleccion()[0], "�", null);
+						doc.insertString(seleccion()[0], "É", null);
 
 					} else if (textTexto.getSelectedText().equals("i")) {
 						doc.remove(seleccion()[0], 1);
-						doc.insertString(seleccion()[0], "�", null);
+						doc.insertString(seleccion()[0], "í", null);
 
 					} else if (textTexto.getSelectedText().equals("I")) {
 						doc.remove(seleccion()[0], 1);
-						doc.insertString(seleccion()[0], "�", null);
+						doc.insertString(seleccion()[0], "Í", null);
 
 					} else if (textTexto.getSelectedText().equals("o")) {
 						doc.remove(seleccion()[0], 1);
-						doc.insertString(seleccion()[0], "�", null);
+						doc.insertString(seleccion()[0], "ó", null);
 
 					} else if (textTexto.getSelectedText().equals("O")) {
 						doc.remove(seleccion()[0], 1);
-						doc.insertString(seleccion()[0], "�", null);
-
-					} else if (textTexto.getSelectedText().equals("o")) {
-						doc.remove(seleccion()[0], 1);
-						doc.insertString(seleccion()[0], "�", null);
-
-					} else if (textTexto.getSelectedText().equals("O")) {
-						doc.remove(seleccion()[0], 1);
-						doc.insertString(seleccion()[0], "�", null);
+						doc.insertString(seleccion()[0], "Ó", null);
 
 					} else if (textTexto.getSelectedText().equals("u")) {
 						doc.remove(seleccion()[0], 1);
-						doc.insertString(seleccion()[0], "�", null);
+						doc.insertString(seleccion()[0], "ú", null);
 
 					} else if (textTexto.getSelectedText().equals("U")) {
 						doc.remove(seleccion()[0], 1);
-						doc.insertString(seleccion()[0], "�", null);
+						doc.insertString(seleccion()[0], "Ú", null);
 					}
 
 				} catch (BadLocationException e1) {
-					JOptionPane.showMessageDialog(null, "Ocurrio un error: " + e1.getMessage(), "Error de completado",
-							JOptionPane.ERROR_MESSAGE);
+				Mensajes.ErrorMessage(tabManager,"Ocurrio un error al intentar autocompletar: " + e1.getMessage(), "Error de completado");
 				}
 
 			}
@@ -259,8 +250,7 @@ public class Tab extends JPanel {
 		} else if ((e.getKeyCode() == KeyEvent.VK_M) && ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0)) {
 
 			if (!tabManager.abrirTabBorrada()) {
-				JOptionPane.showMessageDialog(null, "No hay pestanias borradas guardadas", "Retroceso",
-						JOptionPane.INFORMATION_MESSAGE);
+			Mensajes.ErrorMessage(tabManager,"No hay pestanias borradas guardadas", "Retroceso");
 			}
 
 			// Borar todaas las pestanias guardadas
@@ -271,18 +261,16 @@ public class Tab extends JPanel {
 		} else if (e.getKeyCode() == KeyEvent.VK_S && ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0)) {
 			try {
 				TabsManagerUtils.GuardarTabSeleccioanda(tabManager, false);
-			} catch (IOException | BadLocationException e1) {
-				JOptionPane.showMessageDialog(tabManager, "Error al guardar el archivo: " + e1.getMessage(), "Error al guardar",
-						JOptionPane.ERROR_MESSAGE);
+			} catch (Exception e1) {
+				Mensajes.ErrorMessage(tabManager,"Error al guardar el archivo: " + e1.getMessage(), Mensajes.ErrorSaveTitle);
 			}
 
 			// Abrir
 		} else if (e.getKeyCode() == KeyEvent.VK_O && ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0)) {
 			try {
 				TabsManagerUtils.AbrirTab(tabManager);
-			} catch (IOException | BadLocationException e1) {
-				JOptionPane.showMessageDialog(tabManager, "Error al abrir el archivo: " + e1.getMessage(), "Error al abrir",
-						JOptionPane.ERROR_MESSAGE);
+			} catch (Exception e1) {
+				Mensajes.ErrorMessage(tabManager, "Error al abrir el archivo: " + e1.getMessage(), Mensajes.ErrorOpenTitle);
 			}
 
 			// Imprimir
@@ -290,15 +278,13 @@ public class Tab extends JPanel {
 			try {
 				imprimir();
 			} catch (PrinterException e1) {
-				JOptionPane.showMessageDialog(tabManager, "Error al imprimir el archivo: " + e1.getMessage(), "Error al imprimir",
-						JOptionPane.ERROR_MESSAGE);
+				Mensajes.ErrorMessage(tabManager, "Error al imprimir el archivo: " + e1.getMessage(), Mensajes.ErrorPrintTitle);
 			}
-		}else if((e.getKeyCode() == KeyEvent.VK_W) && ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0)) {
+		} else if ((e.getKeyCode() == KeyEvent.VK_W) && ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0)) {
 			if (tabManager.checkearTabs()) {// Si hay +1 de tab
 				tabManager.cerrarTabSeleccionada();
-			}else {
-				JOptionPane.showMessageDialog(tabManager, "No puede cerrar ventanas si solo hay una abierta", "Aviso de cierre",
-						JOptionPane.WARNING_MESSAGE);
+			} else {
+				Mensajes.WarningMessage(tabManager, "No puede cerrar ventanas si solo hay una abierta", Mensajes.WarningTitle);
 			}
 		}
 	}
@@ -321,8 +307,7 @@ public class Tab extends JPanel {
 			doc.insertString(textTexto.getCaretPosition(), queCompeltar, null);
 			textTexto.setCaretPosition(textTexto.getCaretPosition() - 1);
 		} catch (BadLocationException e1) {
-			JOptionPane.showMessageDialog(null, "Ocurrio un error: " + e1.getMessage(), "Error de completado",
-					JOptionPane.ERROR_MESSAGE);
+			Mensajes.ErrorMessage("Ocurrio un error: " + e1.getMessage(), "Error de completado");
 		}
 
 	}
@@ -331,36 +316,36 @@ public class Tab extends JPanel {
 
 		switch (e.getKeyChar()) {
 
-		case '(': {
-			completarCaracter(e, "()");
-			break;
-		}
-		case '{': {
-			completarCaracter(e, "{}");
-			break;
-		}
-		case '[': {
-			completarCaracter(e, "[]");
-			break;
-		}
-		case '\"': {
-			completarCaracter(e, "\"\"");
-			break;
-		}
-		case '\'': {
-			completarCaracter(e, "\'\'");
-			break;
-		}
-		case '?': {
-			completarCaracter(e, "�?");
-			break;
-		}
-		case '!': {
-			completarCaracter(e, "�!");
-			break;
-		}
-		default:
-			break;
+			case '(': {
+				completarCaracter(e, "()");
+				break;
+			}
+			case '{': {
+				completarCaracter(e, "{}");
+				break;
+			}
+			case '[': {
+				completarCaracter(e, "[]");
+				break;
+			}
+			case '\"': {
+				completarCaracter(e, "\"\"");
+				break;
+			}
+			case '\'': {
+				completarCaracter(e, "\'\'");
+				break;
+			}
+			case '?': {
+				completarCaracter(e, "¿?");
+				break;
+			}
+			case '!': {
+			completarCaracter(e, "¡!");
+				break;
+			}
+			default:
+				break;
 		}
 
 	}
@@ -465,24 +450,24 @@ public class Tab extends JPanel {
 			public void dropActionChanged(DropTargetDragEvent e) {
 			}
 
+			@SuppressWarnings("unchecked")
 			public void drop(DropTargetDropEvent e) {
 				try {
 					// Accept the drop first, important!
 					e.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
 
 					// Get the files that are dropped as java.util.List
-					List listArchivos = (List) e.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
+					List<File> listArchivos = (List<File>) e.getTransferable()
+							.getTransferData(DataFlavor.javaFileListFlavor);
 
 					// Now get the first file from the list,
-					// File file = (File) listArchivos.get(0);
-					for (int i = 0; i < listArchivos.size(); i++) {
-						String ruta = ((File) listArchivos.get(i)).getPath();
-						TabsManagerUtils.AbrirTab(tabManager, ruta);
+					for (File file : listArchivos) {
+						TabsManagerUtils.AbrirTab(tabManager, file.getPath());
 					}
 
 				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, "Ocurrio un error: " + ex.getMessage(),
-							"Error al abrir (externo)", JOptionPane.ERROR_MESSAGE);
+					Mensajes.ErrorMessage(tabManager,
+					"Ocurrio un error al abrir el archivo: " + ex.getMessage(), Mensajes.ErrorOpenTitle);
 				}
 			}
 		});
